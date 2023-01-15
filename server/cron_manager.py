@@ -55,18 +55,20 @@ class CronManager:
                     self.logger.log(f"ERROR: {e}\nSKIPPING JOB: {job}")
         return jobs
 
-    def run_job(self, job: CronJob) -> None:
+    def run_job(self, pos: int, job: CronJob) -> None:
         """
         Run a job.
 
+        :param pos: The position of the job in the jobs list.
         :param job: The job to run.
         """
         self.logger.log(f"EXECUTING JOB: {job.command}")
+        path_to_log = path.dirname(self.log_file) + f"/job_{pos}.log"
         Popen(
             job.command,
             shell=True,
-            stdout=open(self.log_file, 'a'),
-            stderr=open(self.log_file, 'a'),
+            stdout=open(path_to_log, 'a'),
+            stderr=open(path_to_log, 'a'),
             cwd=self.run_dir
         )
 
@@ -75,10 +77,11 @@ class CronManager:
         Run all jobs.
         """
         current_time = datetime.now()
-        for job in self.jobs:
+        for i in range(len(self.jobs)):
+            job = self.jobs[i]
             nt = job.next_time
             if nt < current_time:
-                self.run_job(job.cron_job)
+                self.run_job(i, job.cron_job)
             job.get_next_time(current_time)
 
     def start(self) -> None:
