@@ -1,6 +1,6 @@
 # CRON Docker
 
-This is a simple Docker image that runs cron. It is based on archlinux.
+This is a simple Docker image that runs cron. It is based on python 3.9.
 
 ## Usage
 
@@ -37,10 +37,3 @@ It is recommended to mount a volume to the `/shared` directory. This way you can
 ## License
 
 This project is licensed under the MIT License.
-
-docker run -d \
-    --name cron \
-    -v /home/louis/Téléchargements/tmp:/shared \
-    -v /etc/localtime:/etc/localtime:ro \
-    -v /etc/timezone:/etc/timezone:ro \
-    cron
