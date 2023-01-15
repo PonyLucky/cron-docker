@@ -41,7 +41,6 @@ class CronParser:
         cron_string = re.sub(r"\s+", " ", cron_string)
         cron_string = cron_string.strip()
         cron_string = cron_string.split(" ", 5)
-        print(cron_string)
         if len(cron_string) != 6:
             raise ValueError("Invalid cron string")
         return CronJob(*cron_string)
