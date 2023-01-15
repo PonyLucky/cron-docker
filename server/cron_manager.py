@@ -25,7 +25,7 @@ class CronManager:
         self.crontab_file = crontab_file
         # Get the crontab content
         self.load_crontab()
-        self.crontab_m_time = path.getmtime(log_file)
+        self.crontab_m_time = None
 
         self.logger = CronLogger(log_file)
         self.run_dir = run_dir
@@ -116,6 +116,9 @@ class CronManager:
 
         :return: True if the crontab file has changed, False otherwise.
         """
+        if self.crontab_m_time is None:
+            self.crontab_m_time = path.getmtime(self.crontab_file)
+            return False
         if path.getmtime(self.crontab_file) != self.crontab_m_time:
             self.crontab_m_time = path.getmtime(self.crontab_file)
             return True
